@@ -14,3 +14,26 @@ CREATE TABLE users(
     user_update_at DEFAULT TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 
 );
+
+CREATE TABLE IF NOT EXISTS users_activity (
+    user_activity_log_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    user_email VARCHAR(255) NOT NULL,
+    user_activity_log_status ENUM('success', 'failure') DEFAULT 'success',
+
+
+    --client parameters
+    user_activity_log_ip_address VARCHAR(45),
+    user_activity_log_user VARCHARR(255),
+    user_activity_log_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    --INDEXES
+    INDEX idx_user_id (user_id),
+    INDEX idx_action(user_activity_log_action),
+    INDEX idx_created_at(user_activity_log_created_at), 
+    ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+
+
+
+);
