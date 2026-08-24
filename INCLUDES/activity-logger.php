@@ -22,6 +22,15 @@
                 activity_log_user_agent
                 ) VALUES (?,?,?,?,?,?)
                 ");
+                 
+                $succes - $stmt ->execute([
+                    $user_id,
+                    $user_email,
+                    $acton,
+                    $status,
+                    $ip,
+                    $user_agent
+                ])
 
         } catch (PDOException $e){
             error_log("Activity Log Error: " . $e->getMessage());
