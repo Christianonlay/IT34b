@@ -1,5 +1,5 @@
 <?php
- require_once'config/config.php';
+ require_once '../config/config.php';
 
  $user_id = "root" ?? null;
  $user_email = "root" ?? null;
