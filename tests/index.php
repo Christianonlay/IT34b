@@ -8,7 +8,7 @@ if(isset($_SESSION['user_id'])){
     exit;
 
 }
-$error = '';
+$error='';
 
 if($_SERVER['REQUEST_METHOD'] === 'POST'){
     $login = trim($_POST['login'] ?? '');
