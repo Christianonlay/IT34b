@@ -53,7 +53,8 @@ function requireRole($role)
     requireLogin();
     
     if($_SESSION['user_role'] !== $role){
-        header('Location: ' . BASE_URL . '/index.php');
+       http_response_code(403);
+       die('Access denied.');
         exit;
     }
 }

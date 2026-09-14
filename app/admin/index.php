@@ -38,9 +38,9 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <thead>
 
             <tr>
-                <th>ID</th>
+                <th>Record ID</th>
                 <th>User ID</th>
-                <th>Email</th>
+                <th>User Email</th>
                 <th>Action</th>
                 <th>Status</th>
                 <th>IP Address</th>
@@ -54,7 +54,30 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <tbody>
 
             <?php foreach ($activities as $activity): ?>
+                
+        
 
                 <tr>
+
+                    <td><?= htmlspecialchars( $activity['activity_log_id']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['user_id']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['user_email']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['activity_log_action']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['activity_log_status']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['activity_log_ip_address']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['activity_log_user_agent']) ?></td>
+                    
+                    <td><?= htmlspecialchars( $activity['activity_log_created_at']) ?></td>
+                <tr>
+                    <?php endforeach; ?>
+
+            </table>
+
 </body>
 </html>
