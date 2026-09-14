@@ -25,8 +25,19 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
    $error = "Invalid login credentials";
    
+   IF ($login==='' || $password ===''){
+     logActivity($pdo,null,$login,'login','failed')
+
+   } else {
+     if(loginUser($pdo,$login,$password)) {
+        //
+    echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . 'indes.php';
+   header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
+        exit;
+   }
+
 }
- 
+}
 ?>
 
 
