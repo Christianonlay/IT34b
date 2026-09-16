@@ -25,18 +25,8 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
         
    $error = "Invalid login credentials";
    
-   if ($login==='' || $password ===''){
-     logActivity($pdo,null,$login,'login','failed');
-
-   } else {
-     if(loginUser($pdo,$login,$password)){
-    echo 'Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php';
-   header('Location: ' . BASE_URL . '/app/' . $_SESSION['user_role'] . '/index.php');
-        exit;
-   }
-
 }
-}
+ 
 ?>
 
 
@@ -51,18 +41,23 @@ if($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     
 <form method="POST">
-    <label>Username or Email</label>
+    <label>Username or Email:</label>
     <input type="text" 
            name="login" 
            required>
     <br>
     <br>
-    <label>Password</label>
+    <label>Password:</label>
     <input type="password" 
            name="password" 
            required>
-    <br>
+    <br><br>
     <button type="submit">Sign In</button>
+</form>
  
+  <?php if ($error): ?>
+    <p><?= htmlspecialchars($error) ?></p>
+<?php endif; ?>
+
 </body>
 </html>
