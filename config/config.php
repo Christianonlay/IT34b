@@ -1,7 +1,11 @@
 <?php
 session_start();
 
-require_once(__DIR__ . '/../includes/activity-logger.php');
+require_once(__DIR__ . '/../functions/activity.php');
+require_once(__DIR__ . '/../functions/auth.php');
+require_once(__DIR__ . '/../functions/redirect.php');
+
+
 
 // define('','');
 define('BASE_URL','http://localhost/IT34B/');
