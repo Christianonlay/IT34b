@@ -1,3 +1,4 @@
+
 <?php
 //Start user session
 function startUserSession($pdo)
@@ -21,7 +22,8 @@ function startUserSession($pdo)
     $stmt->execute([
         'user_id' => $user_id
     ]);
-    return $pdo->lastInsertionId();
+    return $pdo->lastInsertId();
 
 }
+
 ?>
