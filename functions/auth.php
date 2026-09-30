@@ -27,6 +27,9 @@ function loginUser($pdo, $login, $password){
     if (!password_verify($password, $user['user_password'])) {
         return false;
     }
+    if(hasActiveUserSession($pdo,$user['user_id'])){
+        return 'active_session';
+    }
 
     $_SESSION['user_id'] = $user['user_id'];
     $_SESSION['user_email'] = $user['user_email'];
