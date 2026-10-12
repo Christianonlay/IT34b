@@ -46,16 +46,20 @@ function requireLogin(){
         header('Location: ' . BASE_URL . '/index.php');
         exit;
     }
+    checkSessionTimeout();
 }
 
 function requireRole($role)
 {
     requireLogin();
-    
+    /*
     if($_SESSION['user_role'] !== $role){
         header('Location: ' . BASE_URL . '/index.php');
         exit;
+    
     }
+        */
+        
 }
 
 ?>
