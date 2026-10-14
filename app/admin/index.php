@@ -1,130 +1,75 @@
 <?php
-require_once '../../config/config.php';
-
+require '../../config/config.php';
 
 requireRole('admin');
 
-logActivity(
-    $pdo,
-    $_SESSION['user_id'],
-    $_SESSION['user_email'],
-    'view_activity_logs'
-);
+$section = $_GET['section'] ?? '';
 
-// Get All Activity Logs
+$action = $_GET['action'] ?? '';
 
-$stmt = $pdo->query("
-    SELECT *
-    FROM activity_logs
-    ORDER BY activity_log_created_at ASC
-");
+if ($section === 'activity-logs'){
+        // Activity Logs Query
+        $stmt = $pdo->query("
+        SELECT * 
+        FROM activity_logs
+        ORDER BY activity_log_created_at DESC
+    ");
 
-$activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+} elseif ($section === 'user-sessions') {
+
+    // User Sessions Query
+    $stmt = $pdo->query("
+        SELECT
+            us.session_id,
+            us.user_id,
+            u.user_username,
+            u.user_email,
+            u.user_role,
+            us.session_start,
+            us.session_end,
+            us.session_duration
+        FROM user_sessions us
+        INNER JOIN users u
+            ON us.user_id = u.user_id
+        ORDER BY us.session_start DESC
+    ");
+
+    $sessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Activity Logs</title>
-
-    <style>
-
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            margin: 0;
-            padding: 30px;
-            color: #333;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-        }
-
-        /* Sign Out */
-        .sign-out {
-            display: inline-block;
-            background-color: #333;
-            color: white;
-            padding: 8px 14px;
-            text-decoration: none;
-            border-radius: 4px;
-            margin-bottom: 20px;
-        }
-
-        .sign-out:hover {
-            background-color: #555;
-        }
-
-        /* Table */
-        .table-container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 6px;
-            overflow-x: auto;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th {
-            background-color: #333;
-            color: white;
-            padding: 12px;
-            text-align: left;
-        }
-
-        td {
-            padding: 10px 12px;
-            border-bottom: 1px solid #ddd;
-        }
-
-        tbody tr:hover {
-            background-color: #f2f2f2;
-        }
-
-        /* Status */
-        .status {
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 13px;
-        }
-
-        .success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-
-        .failed {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-
-    </style>
-
+    <meta name="viewport" content="width=, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
+        <h1>Welcome, Admin!</h1>
 
-    <h1>Welcome Admin</h1>
+        <a href="../../auth/signout.php" class="btn btn-danger">
+            Sign Out
+        </a>
+        <hr>
 
-    <a href="../../auth/signout.php" class="sign-out">
-        Sign Out
-    </a>
+    <nav>
+        <a href="index.php?section=activity-logs" class="btn btn-primary">Activity Logs </a>
+        <a href="index.php?section=user-sessions" class="btn btn-primary">User Sessions </a>
+    </nav>
 
-    <div class="table-container">
+    <?php if ($section === 'activity-logs'): ?>
+
+        <h4>Activity Logs</h4>
 
         <table>
 
             <thead>
-
                 <tr>
                     <th>Record ID</th>
                     <th>User ID</th>
@@ -135,7 +80,6 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <th>User Agent</th>
                     <th>Date & Time</th>
                 </tr>
-
             </thead>
 
             <tbody>
@@ -143,7 +87,6 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <?php foreach ($activities as $activity): ?>
 
                     <tr>
-
                         <td>
                             <?= htmlspecialchars($activity['activity_log_id']) ?>
                         </td>
@@ -161,21 +104,7 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         </td>
 
                         <td>
-
-                            <?php if (strtolower($activity['activity_log_status']) === 'success'): ?>
-
-                                <span class="status success">
-                                    <?= htmlspecialchars($activity['activity_log_status']) ?>
-                                </span>
-
-                            <?php else: ?>
-
-                                <span class="status failed">
-                                    <?= htmlspecialchars($activity['activity_log_status']) ?>
-                                </span>
-
-                            <?php endif; ?>
-
+                            <?= htmlspecialchars($activity['activity_log_status']) ?>
                         </td>
 
                         <td>
@@ -189,6 +118,100 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
                         <td>
                             <?= htmlspecialchars($activity['activity_log_created_at']) ?>
                         </td>
+                    </tr>
+
+                <?php endforeach; ?>
+
+            </tbody>
+
+        </table>
+
+    <?php endif; ?>
+
+    <?php if ($section === 'user-sessions'): ?>
+
+        <h4>User Sessions</h4>
+
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Session ID</th>
+                    <th>User ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Session Start</th>
+                    <th>Session End</th>
+                    <th>Duration</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <?php foreach ($sessions as $session): ?>
+
+                    <tr>
+
+                        <td>
+                            <?= htmlspecialchars($session['session_id']) ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($session['user_id']) ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($session['user_username']) ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($session['user_email']) ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($session['user_role']) ?>
+                        </td>
+
+                        <td>
+                            <?= htmlspecialchars($session['session_start']) ?>
+                        </td>
+
+                        <td>
+                            <?= $session['session_end']
+                                ? htmlspecialchars($session['session_end'])
+                                : 'Active'
+                            ?>
+                        </td>
+
+                        <td>
+
+                            <?php
+
+                            if ($session['session_duration'] !== null) {
+
+                                $seconds = (int) $session['session_duration'];
+
+                                $hours = floor($seconds / 3600);
+                                $minutes = floor(($seconds % 3600) / 60);
+                                $seconds = $seconds % 60;
+
+                                echo sprintf(
+                                    '%02d hr %02d min %02d sec',
+                                    $hours,
+                                    $minutes,
+                                    $seconds
+                                );
+
+                            } else {
+
+                                echo 'Active';
+
+                            }
+
+                            ?>
+
+                        </td>
 
                     </tr>
 
@@ -198,8 +221,7 @@ $activities = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         </table>
 
-    </div>
-
+    <?php endif; ?>
 </body>
 
 </html>
