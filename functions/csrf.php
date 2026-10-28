@@ -1,6 +1,6 @@
 <?php
 //Generate a csrf token
-function generatesrfToken(){
+function generateCsrfToken(){
     if(empty($_SESSION['csrf_token'])){
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         
@@ -9,18 +9,18 @@ function generatesrfToken(){
 
 }
 //verify csrf token
-function verifyCsrf($token){
+function verifyCsrfToken($token){
     if(empty($_SESSION['csrf_token']) || empty($token)
         ){
     return false;
 }
-return hash_equal(
+return hash_equals(
     $_SESSION['csrf_token'],$token
 );
 }
 
 //require CSRF Token 
-function requirecsrfToken(){
+function requireCsrfToken(){
 
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){
         return;

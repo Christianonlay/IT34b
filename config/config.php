@@ -5,6 +5,7 @@ require_once(__DIR__ . '/../functions/activity.php');
 require_once(__DIR__ . '/../functions/auth.php');
 require_once(__DIR__ . '/../functions/redirect.php');
 require_once(__DIR__ . '/../functions/session.php');
+require_once(__DIR__ . '/../functions/csrf.php');
 
 
 
