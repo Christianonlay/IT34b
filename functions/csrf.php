@@ -19,7 +19,7 @@ return hash_equals(
 );
 }
 
-//require CSRF Token 
+//require CSRF Token
 function requireCsrfToken(){
 
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){

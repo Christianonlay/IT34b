@@ -10,7 +10,7 @@ require_once(__DIR__ . '/../functions/csrf.php');
 
 
 // define('','');
-define('BASE_URL','http://localhost/IT34B/');
+define('BASE_URL','http://localhost/IT34B_1/');
 
 define('DB_HOST','localhost');
 define('DB_NAME','it34b_lab');
