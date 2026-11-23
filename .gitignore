@@ -1,4 +1,1 @@
-define('DB_HOST','localhost');
-define('DB_NAME','it34b_lab');
-define('DB_USER','root');
-define('DB_PASS','');
+.env
