@@ -7,7 +7,6 @@ requireRole('admin');
 $section = $_GET['section'] ?? '';
 $action = $_GET['action'] ?? '';
 
-
 if ($section === 'activity-logs') {
     $stmt = $pdo->query("
         SELECT *
@@ -35,6 +34,7 @@ if ($section === 'activity-logs') {
 
     $sessions = $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 if ($action === 'export') {
 
     if ($section === 'activity-logs') {
